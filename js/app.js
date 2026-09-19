@@ -1,8 +1,4 @@
 (function () {
-  const INBOX = "c998591065h392a6cc27eac5m2189047530@mail.conversations.godaddy.com";
-  const COPY = "krmanagementteamsent@gmail.com";
-  const ENDPOINT = "https://formsubmit.co/ajax/" + encodeURIComponent(INBOX);
-
   const btn = document.querySelector("[data-menu]");
   const links = document.querySelector("[data-nav]");
   if (btn && links) {
@@ -12,84 +8,64 @@
     });
   }
 
-  function refId() {
-    return "KRM-" + Math.random().toString(36).slice(2, 7).toUpperCase();
-  }
-
-  function showNote(form, text) {
-    const note = form.querySelector("[data-success]");
-    if (!note) return;
-    note.style.display = "block";
-    note.textContent = text;
+  function setError(form, text) {
+    let box = form.querySelector("[data-error]");
+    if (!box) {
+      box = document.createElement("p");
+      box.className = "field-error";
+      box.setAttribute("data-error", "");
+      box.setAttribute("role", "alert");
+      form.appendChild(box);
+    }
+    box.textContent = text || "";
   }
 
   document.querySelectorAll("[data-form]").forEach(function (form) {
+    let locked = false;
     form.addEventListener("submit", function (event) {
       event.preventDefault();
-      const type = form.getAttribute("data-form") || "general";
+      if (locked) return;
+      const type = form.getAttribute("data-form") || "contact";
       const data = new FormData(form);
-      const payload = {};
-      data.forEach(function (value, key) {
-        payload[key] = String(value).trim();
-      });
+      const payload = { form: type };
+      data.forEach(function (value, key) { payload[key] = String(value).trim(); });
 
-      if (!payload.email || (!payload.name && !payload.firstName)) {
-        return;
-      }
+      if (payload.website) return;
+      const name = payload.name || payload.firstName || "";
+      const email = payload.email || "";
+      if (!name) return setError(form, "Please enter your name.");
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return setError(form, "Please enter a valid email address.");
+      if (type !== "newsletter" && !(payload.message || "").trim()) return setError(form, "Please enter a message.");
+      setError(form, "");
 
-      const reference = refId();
-      const body = {
-        _subject: "KR Management inquiry — " + (payload.inquiryType || type) + " [" + reference + "]",
-        _template: "table",
-        _captcha: "false",
-        _cc: COPY,
-        source: "KR Management Hub",
-        reference: reference,
-        form: type,
-        name: payload.name || payload.firstName || "",
-        firstName: payload.firstName || "",
-        email: payload.email,
-        phone: payload.phone || "",
-        country: payload.country || "",
-        inquiryType: payload.inquiryType || type,
-        preferredDate: payload.preferredDate || "",
-        guests: payload.guests || "",
-        message: payload.message || "",
-        consent: payload.consent || payload.marketing || "",
-        submittedAt: new Date().toISOString()
-      };
-
+      locked = true;
       const submitBtn = form.querySelector("button[type='submit']");
       if (submitBtn) submitBtn.disabled = true;
 
-      fetch(ENDPOINT, {
+      fetch("/api/inquiry", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        },
-        body: JSON.stringify(body)
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload)
       })
-        .then(function () {
-          showNote(
-            form,
-            "Your inquiry has been received (" + reference + "). The KR Management Team will review the information and respond through the contact method provided."
-          );
+        .then(function (res) { return res.json().then(function (json) { return { res: res, json: json }; }); })
+        .then(function (result) {
+          if (!result.res.ok || !result.json.ok) {
+            setError(form, (result.json && result.json.error) || "Your request could not be sent. Please try again.");
+            return;
+          }
+          const note = form.querySelector("[data-success]");
+          if (note) {
+            note.classList.add("show");
+            note.style.display = "block";
+            note.innerHTML = "Thank you. Your request has been received.<br>Reference ID: <strong>" + result.json.reference + "</strong><br>Please keep this reference ID for your records.";
+          }
           form.reset();
         })
         .catch(function () {
-          const subject = encodeURIComponent("KR Management inquiry — " + (payload.inquiryType || type) + " [" + reference + "]");
-          const lines = Object.keys(body)
-            .filter(function (key) { return key.charAt(0) !== "_"; })
-            .map(function (key) { return key + ": " + body[key]; })
-            .join("\n");
-          window.location.href = "mailto:" + INBOX + "?cc=" + encodeURIComponent(COPY) + "&subject=" + subject + "&body=" + encodeURIComponent(lines);
-          showNote(
-            form,
-            "Your inquiry has been received (" + reference + "). The KR Management Team will review the information and respond through the contact method provided."
-          );
+          setError(form, "Your request could not be sent. Please try again.");
         })
         .finally(function () {
+          locked = false;
           if (submitBtn) submitBtn.disabled = false;
         });
     });
