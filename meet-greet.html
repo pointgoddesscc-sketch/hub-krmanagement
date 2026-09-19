@@ -1,80 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KR Management Team Meet & Greet Inquiries</title>
-    <link rel="stylesheet" href="css/styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KR Management | Meet & Greet</title>
+  <meta name="description" content="Request a meet-and-greet or appearance review through KR Management. Submission is not a confirmed booking.">
+  <link rel="canonical" href="https://hub.kidrockmanagementteamsent.com/meet-greet">
+  <meta name="theme-color" content="#070708">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="dark-theme">
-    <header>
-        <!-- Placeholder for header, same as index.html -->
-        <nav>
-            <a href="index.html">Home</a>
-            <!-- Add other navigation links as needed -->
-        </nav>
-        <h1>KR Management Team</h1>
-    </header>
+<body>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="index.html"><span class="mark">KR</span><span class="brand-text"><strong>KR Management</strong><span>Team</span></span></a>
+      <button class="menu-btn" type="button" data-menu aria-expanded="false" aria-label="Open menu">Menu</button>
+      <nav class="nav-links" data-nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="fan-experience.html">Fan Experience</a>
+        <a href="vip.html">VIP</a>
+        <a href="meet-greet.html" class="active">Meet & Greet</a>
+        <a href="shop.html">Shop</a>
+        <a href="channels.html">Channels</a>
+        <a href="contact.html" class="nav-cta">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-    <main class="container">
-        <section class="form-section">
-            <h2>Meet & Greet and Inquiry Form</h2>
-            <p>Please fill out the form below to submit your inquiry. We will get back to you as soon as possible.</p>
-            <form data-form="meet-greet">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone:</label>
-                    <input type="tel" id="phone" name="phone">
-                </div>
-                <div class="form-group">
-                    <label for="country">Country:</label>
-                    <input type="text" id="country" name="country">
-                </div>
-                <div class="form-group">
-                    <label for="inquiryType">Inquiry Type:</label>
-                    <select id="inquiryType" name="inquiryType" required>
-                        <option value="">Select an option</option>
-                        <option value="Meet & Greet">Meet & Greet</option>
-                        <option value="VIP Experience">VIP Experience</option>
-                        <option value="Private Appearance">Private Appearance</option>
-                        <option value="Booking">Booking</option>
-                        <option value="Fan Opportunity">Fan Opportunity</option>
-                        <option value="General Management Inquiry">General Management Inquiry</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="preferredDate">Preferred Date (if applicable):</label>
-                    <input type="date" id="preferredDate" name="preferredDate">
-                </div>
-                <div class="form-group">
-                    <label for="guests">Number of Guests (if applicable):</label>
-                    <input type="number" id="guests" name="guests" min="1">
-                </div>
-                <div class="form-group">
-                    <label for="message">Message:</label>
-                    <textarea id="message" name="message" rows="5" required></textarea>
-                </div>
-                <div class="form-group checkbox-group">
-                    <input type="checkbox" id="consent" name="consent" required>
-                    <label for="consent">I consent to my data being processed for the purpose of this inquiry.</label>
-                </div>
-                <button type="submit" class="submit-button">Submit Inquiry</button>
-            </form>
-        </section>
-    </main>
+  <section class="page-hero wrap">
+    <p class="kicker">Meet & Greet</p>
+    <h1>Request a review. Availability is never assumed.</h1>
+    <p>This form is for interest and scheduling review only. Sending a request does not confirm a meeting, appearance, or ticket.</p>
+  </section>
 
-    <footer>
-        <!-- Placeholder for footer, same as index.html -->
-        <p>&copy; 2023 KR Management Team. All rights reserved.</p>
-    </footer>
+  <section>
+    <div class="wrap grid-2">
+      <form class="card" data-form="meet-greet" novalidate>
+        <p class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></p>
+        <label for="name">Full name</label>
+        <input id="name" name="name" required autocomplete="name">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required autocomplete="email">
+        <label for="phone">Phone</label>
+        <input id="phone" name="phone" type="tel" autocomplete="tel">
+        <label for="country">Country</label>
+        <input id="country" name="country" autocomplete="country-name">
+        <label for="inquiryType">Request type</label>
+        <select id="inquiryType" name="inquiryType" required>
+          <option>Meet & Greet</option>
+          <option>VIP Inquiry</option>
+          <option>Private Appearance</option>
+          <option>Booking</option>
+          <option>Fan Experience</option>
+          <option>Other</option>
+        </select>
+        <label for="preferredDate">Preferred date</label>
+        <input id="preferredDate" name="preferredDate" type="date">
+        <label for="guests">Guests</label>
+        <input id="guests" name="guests" type="number" min="1" max="20">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required></textarea>
+        <label class="consent"><input type="checkbox" name="consent" value="yes" required> I understand this is a request for review, not a confirmed booking.</label>
+        <button class="btn btn-primary btn-full" type="submit">Submit request</button>
+        <p class="form-ok" data-success></p>
+      </form>
+      <div class="notice">
+        <strong>How review works</strong>
+        <p>The team reads each request, issues a reference ID, and replies only through published channels. Keep the reference ID for your records.</p>
+      </div>
+    </div>
+  </section>
 
-    <script src="js/app.js"></script>
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="foot-modern">
+        <div>
+          <h3>KR Management</h3>
+          <p>Official Management & Fan Experience Hub</p>
+        </div>
+        <div>
+          <h4>Navigation</h4>
+          <a href="fan-experience.html">Fan Experience</a>
+          <a href="vip.html">VIP</a>
+          <a href="meet-greet.html">Meet & Greet</a>
+          <a href="community.html">Community</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="refund.html">Refund</a>
+          <a href="disclaimer.html">Disclaimer</a>
+        </div>
+      </div>
+      <p class="legal">&copy; 2026 KR Management Team. All rights reserved.</p>
+    </div>
+  </footer>
+  <script src="js/app.js"></script>
 </body>
 </html>
