@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact Management · KR Management Team</title>
+  <meta name="description" content="Contact the KR Management Team.">
+  <meta name="theme-color" content="#070708">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="index.html">
+        <span class="mark">KR</span>
+        <span class="brand-text"><strong>KR Management</strong><span>Team</span></span>
+      </a>
+      <button class="menu-btn" type="button" data-menu aria-expanded="false" aria-label="Open menu">Menu</button>
+      <nav class="nav-links" data-nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="fan-experience.html">Fan Experience</a>
+        <a href="vip.html">VIP</a>
+        <a href="meet-greet.html">Meet & Greet</a>
+        <a href="shop.html">Shop</a>
+        <a href="channels.html">Channels</a>
+        <a href="contact.html" class="nav-cta">Contact</a>
+      </nav>
+    </div>
+  </header>
+  <section class="page-hero wrap">
+    <p class="kicker">Contact Management</p>
+    <h1>KR Management Team</h1>
+    <p>Inquiries are reviewed by the management team. Use this form so your details arrive in the official inbox.</p>
+  </section>
+  <section>
+    <div class="wrap grid-2">
+      <form class="card" data-form="contact">
+        <label for="name">Full name</label>
+        <input id="name" name="name" required autocomplete="name">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required autocomplete="email">
+        <label for="inquiryType">Inquiry category</label>
+        <select id="inquiryType" name="inquiryType" required>
+          <option>General Inquiry</option>
+          <option>Fan Support</option>
+          <option>Meet & Greet</option>
+          <option>VIP</option>
+          <option>Private Appearance</option>
+          <option>Booking</option>
+          <option>Media</option>
+          <option>Business</option>
+        </select>
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required></textarea>
+        <label class="consent"><input type="checkbox" name="consent" value="yes" required> I agree to be contacted about this inquiry. I will not send passwords or financial credentials.</label>
+        <button class="btn btn-primary btn-full" type="submit">Send inquiry</button>
+        <p class="form-ok" data-success></p>
+      </form>
+      <div>
+        <article class="card">
+          <h3>Stay Connected</h3>
+          <p>Receive approved updates, announcements, fan opportunities, and news from KR Management.</p>
+          <form data-form="newsletter" style="margin-top:16px">
+            <label for="firstName">First name</label>
+            <input id="firstName" name="firstName" required autocomplete="given-name">
+            <label for="newsEmail">Email address</label>
+            <input id="newsEmail" name="email" type="email" required autocomplete="email">
+            <label class="consent"><input type="checkbox" name="marketing" value="yes" required> I consent to receive optional updates and understand I can unsubscribe.</label>
+            <button class="btn btn-ghost btn-full" type="submit">Join the list</button>
+            <p class="form-ok" data-success></p>
+          </form>
+        </article>
+      </div>
+    </div>
+  </section>
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <h3>KR Management Team</h3>
+          <p style="color:var(--muted);margin-top:10px;">Management · Fan Relations · Artist Support</p>
+          <p class="tagline">Music. Loyalty. Freedom. Legacy.</p>
+        </div>
+        <div class="foot-links">
+          <a href="about.html">About</a>
+          <a href="fan-experience.html">Fan Experience</a>
+          <a href="vip.html">VIP</a>
+          <a href="meet-greet.html">Meet & Greet</a>
+          <a href="contact.html">Contact</a>
+          <a href="channels.html">Official Channels</a>
+          <a href="community.html">Community</a>
+          <a href="shop.html">Shop</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="refund.html">Refund Policy</a>
+          <a href="disclaimer.html">Disclaimer</a>
+        </div>
+      </div>
+      <p class="legal">© 2026 KR Management Team. All rights reserved.</p>
+    </div>
+  </footer>
+  <script src="js/app.js"></script>
+</body>
+</html>
