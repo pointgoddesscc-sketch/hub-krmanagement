@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://hub-krmanagement.vercel.app/sitemap.xml
+Sitemap: https://hub.kidrockmanagementteamsent.com/sitemap.xml
