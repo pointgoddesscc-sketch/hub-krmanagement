@@ -1,4 +1,5 @@
 (function () {
+  const year = new Date().getFullYear();
   const btn = document.querySelector("[data-menu]");
   const links = document.querySelector("[data-nav]");
   if (btn && links) {
@@ -7,7 +8,16 @@
       btn.setAttribute("aria-expanded", open ? "true" : "false");
     });
   }
-
+  const footer = document.querySelector(".site-footer .wrap") || document.querySelector(".site-footer");
+  if (footer) {
+    footer.innerHTML =
+      '<div class="foot-modern">' +
+      '<div><h3>KR Management</h3><p>Official Management & Fan Experience Hub</p><p class="tagline">Music. Loyalty. Freedom. Legacy.</p></div>' +
+      '<div><h4>Navigation</h4><a href="fan-experience.html">Fan Experience</a><a href="vip.html">VIP</a><a href="meet-greet.html">Meet & Greet</a><a href="community.html">Community</a><a href="contact.html">Contact</a></div>' +
+      '<div><h4>Legal</h4><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund.html">Refund</a><a href="disclaimer.html">Disclaimer</a></div>' +
+      '</div>' +
+      '<p class="legal">&copy; ' + year + ' KR Management Team. All rights reserved.</p>';
+  }
   function setError(form, text) {
     let box = form.querySelector("[data-error]");
     if (!box) {
@@ -19,7 +29,6 @@
     }
     box.textContent = text || "";
   }
-
   document.querySelectorAll("[data-form]").forEach(function (form) {
     let locked = false;
     form.addEventListener("submit", function (event) {
@@ -29,7 +38,6 @@
       const data = new FormData(form);
       const payload = { form: type };
       data.forEach(function (value, key) { payload[key] = String(value).trim(); });
-
       if (payload.website) return;
       const name = payload.name || payload.firstName || "";
       const email = payload.email || "";
@@ -37,11 +45,13 @@
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return setError(form, "Please enter a valid email address.");
       if (type !== "newsletter" && !(payload.message || "").trim()) return setError(form, "Please enter a message.");
       setError(form, "");
-
       locked = true;
       const submitBtn = form.querySelector("button[type='submit']");
-      if (submitBtn) submitBtn.disabled = true;
-
+      const original = submitBtn ? submitBtn.textContent : "";
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = type === "meet-greet" ? "Submitting request..." : "Sending request...";
+      }
       fetch("/api/inquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
@@ -50,23 +60,26 @@
         .then(function (res) { return res.json().then(function (json) { return { res: res, json: json }; }); })
         .then(function (result) {
           if (!result.res.ok || !result.json.ok) {
-            setError(form, (result.json && result.json.error) || "Your request could not be sent. Please try again.");
+            setError(form, (result.json && result.json.error) || "We couldn't complete your request right now. Please try again.");
             return;
           }
           const note = form.querySelector("[data-success]");
           if (note) {
             note.classList.add("show");
             note.style.display = "block";
-            note.innerHTML = "Thank you. Your request has been received.<br>Reference ID: <strong>" + result.json.reference + "</strong><br>Please keep this reference ID for your records.";
+            note.innerHTML = "Request received<br>Reference ID: <strong>" + result.json.reference + "</strong><br>Please keep this reference ID for your records.";
           }
           form.reset();
         })
         .catch(function () {
-          setError(form, "Your request could not be sent. Please try again.");
+          setError(form, "We couldn't complete your request right now. Please try again.");
         })
         .finally(function () {
           locked = false;
-          if (submitBtn) submitBtn.disabled = false;
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = original;
+          }
         });
     });
   });
