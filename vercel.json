@@ -1,6 +1,10 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/refunds", "destination": "/refund", "permanent": true },
+    { "source": "/meet-and-greet", "destination": "/meet-greet", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/(.*)",

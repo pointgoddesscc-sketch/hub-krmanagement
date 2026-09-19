@@ -8,13 +8,14 @@
       btn.setAttribute("aria-expanded", open ? "true" : "false");
     });
   }
+  const keep = document.querySelector(".site-footer[data-keep]");
   const footer = document.querySelector(".site-footer .wrap") || document.querySelector(".site-footer");
-  if (footer) {
+  if (footer && !keep) {
     footer.innerHTML =
       '<div class="foot-modern">' +
-      '<div><h3>KR Management</h3><p>Official Management & Fan Experience Hub</p><p class="tagline">Music. Loyalty. Freedom. Legacy.</p></div>' +
-      '<div><h4>Navigation</h4><a href="fan-experience.html">Fan Experience</a><a href="vip.html">VIP</a><a href="meet-greet.html">Meet & Greet</a><a href="community.html">Community</a><a href="contact.html">Contact</a></div>' +
-      '<div><h4>Legal</h4><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund.html">Refund</a><a href="disclaimer.html">Disclaimer</a></div>' +
+      '<div><h3>KR Management</h3><p>Official management and fan-relations desk supporting Kid Rock.</p><p class="tagline">Music. Loyalty. Freedom. Legacy.</p></div>' +
+      '<div><h4>Connect</h4><a href="https://kidrockmanagement.godaddysites.com" rel="noopener">Contact</a><a href="https://linktr.ee/krmanagementt" rel="noopener">LinkMe</a><a href="meet-greet.html">Meet & Greet</a><a href="shop.html">Shop</a><a href="channels.html">Channels</a></div>' +
+      '<div><h4>Legal</h4><a href="legal.html">Legal</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund.html">Refund</a><a href="disclaimer.html">Disclaimer</a></div>' +
       '</div>' +
       '<p class="legal">&copy; ' + year + ' KR Management Team. All rights reserved.</p>';
   }
