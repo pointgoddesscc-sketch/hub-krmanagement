@@ -9,16 +9,14 @@ function refId() {
 }
 
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "https://hub-krmanagement.vercel.app");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   if (req.method === "OPTIONS") return res.status(204).end();
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "Method not allowed" });
 
-  const ip = req.headers["x-forwarded-for"] || "unknown";
+  const ip = String(req.headers["x-forwarded-for"] || "unknown").split(",")[0].trim();
   const now = Date.now();
-  const last = RATE.get(ip) || 0;
-  if (now - last < 8000) return res.status(429).json({ ok: false, error: "Please wait a moment before sending another request." });
+  if (now - (RATE.get(ip) || 0) < 8000) {
+    return res.status(429).json({ ok: false, error: "Please wait a moment before sending another request." });
+  }
   RATE.set(ip, now);
 
   let body = req.body || {};
@@ -44,30 +42,31 @@ export default async function handler(req, res) {
   const copy = process.env.COPY_EMAIL || "krmanagementteamsent@gmail.com";
   if (!inbox) return res.status(500).json({ ok: false, error: "Inquiry service is temporarily unavailable." });
 
+  const params = new URLSearchParams();
+  params.set("_subject", "KR Management inquiry — " + inquiryType + " [" + reference + "]");
+  params.set("_template", "box");
+  params.set("_captcha", "false");
+  params.set("_cc", copy);
+  params.set("source", "KR Management Hub");
+  params.set("reference", reference);
+  params.set("form", form);
+  params.set("name", name);
+  params.set("email", email);
+  params.set("phone", phone);
+  params.set("country", country);
+  params.set("inquiryType", inquiryType);
+  params.set("message", message);
+
   try {
-    const sent = await fetch("https://formsubmit.co/ajax/" + encodeURIComponent(inbox), {
+    const sent = await fetch("https://formsubmit.co/" + encodeURIComponent(inbox), {
       method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({
-        _subject: "KR Management inquiry — " + inquiryType + " [" + reference + "]",
-        _template: "box",
-        _captcha: "false",
-        _cc: copy,
-        source: "KR Management Hub",
-        reference,
-        form,
-        name,
-        email,
-        phone,
-        country,
-        inquiryType,
-        preferredDate: clean(body.preferredDate, 40),
-        guests: clean(body.guests, 10),
-        message,
-        submittedAt: new Date().toISOString()
-      })
+      headers: { "Content-Type": "application/x-www-form-urlencoded", Accept: "application/json" },
+      body: params.toString(),
+      redirect: "follow"
     });
-    if (!sent.ok) return res.status(502).json({ ok: false, error: "Your request could not be sent. Please try again." });
+    if (!sent.ok && sent.status >= 500) {
+      return res.status(502).json({ ok: false, error: "Your request could not be sent. Please try again." });
+    }
   } catch (err) {
     return res.status(502).json({ ok: false, error: "Your request could not be sent. Please try again." });
   }
